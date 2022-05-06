@@ -35,6 +35,18 @@ func newReflectionField(structField reflect.StructField, value reflect.Value) *R
 	return field
 }
 
+func (field *ReflectionField) GetReflectType() reflect.Type {
+	return field.refType
+}
+
+func (field *ReflectionField) GetReflectValue() reflect.Value {
+	return field.refValue
+}
+
+func (field *ReflectionField) GetReflectKind() reflect.Kind {
+	return field.refKind
+}
+
 func (field *ReflectionField) IsAnonymous() bool {
 	return field.structField.Anonymous
 }
