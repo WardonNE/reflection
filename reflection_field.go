@@ -6,6 +6,9 @@ import (
 )
 
 type ReflectionField struct {
+	isStruct    bool
+	isStructPtr bool
+
 	structField reflect.StructField
 	refType     reflect.Type
 	refKind     reflect.Kind
@@ -32,6 +35,8 @@ func newReflectionField(structField reflect.StructField, value reflect.Value) *R
 		field.Value = value.Interface()
 	}
 	field.refTag = field.structField.Tag
+	field.isStruct = field.refKind == reflect.Struct
+	field.isStructPtr = (field.refKind == reflect.Ptr && field.refType.Elem().Kind() == reflect.Struct)
 	return field
 }
 
@@ -45,6 +50,14 @@ func (field *ReflectionField) GetReflectValue() reflect.Value {
 
 func (field *ReflectionField) GetReflectKind() reflect.Kind {
 	return field.refKind
+}
+
+func (field *ReflectionField) IsStructPtr() bool {
+	return field.isStructPtr
+}
+
+func (field *ReflectionField) IsStruct() bool {
+	return field.isStruct
 }
 
 func (field *ReflectionField) IsAnonymous() bool {
